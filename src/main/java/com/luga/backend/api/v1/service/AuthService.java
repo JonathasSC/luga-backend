@@ -9,6 +9,8 @@ import com.luga.backend.api.v1.dto.UserLoginRequestDTO;
 import com.luga.backend.api.v1.dto.UserRegisterRequestDTO;
 import com.luga.backend.domain.entity.UserEntity;
 import com.luga.backend.domain.repository.UserRepository;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,13 +50,12 @@ public class AuthService {
     }
 
     public UserLoginResponseDTO login(UserLoginRequestDTO dto) {
-
         UserEntity user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Invalid username or password"));
+                .orElseThrow(() -> 
+                    new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos"));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos");
         }
 
         String token = jwtService.generateToken(user);
