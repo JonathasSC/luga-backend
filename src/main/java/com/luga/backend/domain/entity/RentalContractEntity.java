@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
 
-
 @Entity
 @Table(name = "rental_contracts")
 @Data
@@ -19,7 +18,7 @@ public class RentalContractEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "property_id", nullable = false)
-    private PropertyEntity property;
+    private PropertyBaseEntity property;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tenant_id", nullable = false)
@@ -45,18 +44,33 @@ public class RentalContractEntity extends BaseEntity {
 
     public boolean isExpired(Clock clock) {
         return expirationDate != null &&
-            expirationDate.isBefore(LocalDate.now(clock));
+                expirationDate.isBefore(LocalDate.now(clock));
+    }
+
+    public boolean isActive(Clock clock) {
+        return !isExpired(clock);
     }
 
     @PrePersist
     @PreUpdate
     private void beforeSave() {
+
+        if (property == null) {
+            throw new IllegalStateException("Property is required");
+        }
+
+        if (tenant == null) {
+            throw new IllegalStateException("Tenant is required");
+        }
+
         if (durationInMonths == null || durationInMonths <= 0) {
             throw new IllegalStateException("durationInMonths must be > 0");
         }
+
         if (startDate == null) {
             throw new IllegalStateException("startDate is required");
         }
+
         this.expirationDate = startDate.plusMonths(durationInMonths);
     }
 }

@@ -5,7 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-   <include file="db/changelog/changes/02-create-addresses-table.yaml" relativeToChangelogFile="false"/>
-   <include file="db/changelog/changes/03-create-properties-table.yaml" relativeToChangelogFile="false"/>
-   <include file="db/changelog/changes/04-create-users-table.yaml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/02-create-addresses-table.yaml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/03-create-properties-table.yaml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/04-create-users-table.yaml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/05-create-apartament-and-houses-table.yaml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/changes/06-update-related-names.yaml"/>
 </databaseChangeLog>
