@@ -328,3 +328,334 @@ databaseChangeLog:
             columnName: username
             tableName: users
 
+
+databaseChangeLog:
+  - changeSet:
+      id: 1772542402949-13
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_apartements
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: floor
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: unit_number
+                  type: VARCHAR(255)
+              - column:
+                  name: condo_fee
+                  type: DECIMAL
+            tableName: apartements
+  - changeSet:
+      id: 1772542402949-14
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_houses
+                  name: id
+                  type: UUID
+              - column:
+                  name: has_garage
+                  type: BOOLEAN
+              - column:
+                  name: has_yard
+                  type: BOOLEAN
+              - column:
+                  name: lot_size
+                  type: DOUBLE
+              - column:
+                  name: number_of_floors
+                  type: INT
+            tableName: houses
+  - changeSet:
+      id: 1772542402949-15
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_rental_contracts
+                  name: id
+                  type: UUID
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: property_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: tenant_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: rent_value
+                  type: DECIMAL(15, 2)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: start_date
+                  type: DATE
+              - column:
+                  constraints:
+                    nullable: false
+                  name: duration_in_months
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: expiration_date
+                  type: DATE
+            tableName: rental_contracts
+  - changeSet:
+      id: 1772542402949-16
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tenants
+                  name: id
+                  type: UUID
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: cpf
+                  type: VARCHAR(255)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(255)
+            tableName: tenants
+  - changeSet:
+      id: 1772542402949-17
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: property_type
+                  type: VARCHAR(31)
+            tableName: properties
+  - changeSet:
+      id: 1772542402949-18
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - update:
+            columns:
+              - column:
+                  name: property_type
+                  value: PropertyBaseEntity
+            tableName: properties
+            where: property_type is null
+  - changeSet:
+      id: 1772542402949-19
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: property_type
+            tableName: properties
+  - changeSet:
+      id: 1772542402949-20
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: apartements
+            constraintName: FK_APARTEMENTS_ON_ID
+            referencedColumnNames: id
+            referencedTableName: properties
+  - changeSet:
+      id: 1772542402949-21
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: houses
+            constraintName: FK_HOUSES_ON_ID
+            referencedColumnNames: id
+            referencedTableName: properties
+  - changeSet:
+      id: 1772542402949-22
+      author: jonathas.cardoso
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_RENTAL_CONTRACTS_ON_PROPERTY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: property_id
+            baseTableName: rental_contracts
+            constraintName: FK_RENTAL_CONTRACTS_ON_PROPERTY
+            referencedColumnNames: id
+            referencedTableName: properties
+  - changeSet:
+      id: 1772542402949-23
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: FK_RENTAL_CONTRACTS_ON_PROPERTY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: tenant_id
+            baseTableName: rental_contracts
+            constraintName: FK_RENTAL_CONTRACTS_ON_TENANT
+            referencedColumnNames: id
+            referencedTableName: tenants
+  - changeSet:
+      id: 1772542402949-1
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: city
+            newDataType: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-2
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: country
+            newDataType: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-3
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-4
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: properties
+  - changeSet:
+      id: 1772542402949-5
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: users
+  - changeSet:
+      id: 1772542402949-6
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: email
+            tableName: users
+  - changeSet:
+      id: 1772542402949-7
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: neighborhood
+            newDataType: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-8
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: number
+            newDataType: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-9
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: password
+            tableName: users
+  - changeSet:
+      id: 1772542402949-10
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: state
+            newDataType: VARCHAR(255)
+            tableName: addresses
+  - changeSet:
+      id: 1772542402949-11
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: status
+            newDataType: VARCHAR(255)
+            tableName: properties
+  - changeSet:
+      id: 1772542402949-12
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: username
+            tableName: users
+
