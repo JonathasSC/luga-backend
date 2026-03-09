@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1772561791019-3
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: properties
+              columnName: property_type
+      changes:
+        - addColumn:
+            tableName: properties
+            columns:
+              - column:
+                  name: property_type
+                  type: VARCHAR(31)
+  - changeSet:
+      id: 1772561791019-4
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - update:
+            columns:
+              - column:
+                  name: property_type
+                  value: PropertyBaseEntity
+            tableName: properties
+            where: property_type is null
+  - changeSet:
+      id: 1772561791019-5
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: property_type
+            tableName: properties
+  - changeSet:
+      id: 1772561791019-1
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: datetime
+            columnName: created_at
+            tableName: properties
+  - changeSet:
+      id: 1772561791019-2
+      author: jonathas.cardoso
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: status
+            newDataType: VARCHAR(255)
+            tableName: properties
+
