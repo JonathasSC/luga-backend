@@ -4,6 +4,7 @@ import io.locatar.domain.base.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @Entity
@@ -11,7 +12,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class TenantEntity extends BaseEntity {
 

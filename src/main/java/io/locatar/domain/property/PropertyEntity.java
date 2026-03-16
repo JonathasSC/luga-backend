@@ -2,6 +2,7 @@ package io.locatar.domain.property;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import io.locatar.api.v1.enums.PropertyStatus;
 import io.locatar.domain.address.AddressEntity;
 import io.locatar.domain.base.BaseEntity;
@@ -15,6 +16,7 @@ import io.locatar.domain.user.UserEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public abstract class PropertyEntity extends BaseEntity {
 
     @Column(nullable = false)

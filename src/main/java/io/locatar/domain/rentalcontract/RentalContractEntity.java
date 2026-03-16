@@ -2,6 +2,7 @@ package io.locatar.domain.rentalcontract;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -16,7 +17,7 @@ import io.locatar.domain.tenant.TenantEntity;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class RentalContractEntity extends BaseEntity {
 

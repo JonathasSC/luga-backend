@@ -3,11 +3,13 @@ package io.locatar.domain.base;
 import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class BaseEntity {
 
     @Id
